@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dialogue Questions</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+    #questionBox { margin: 20px auto; padding: 20px; width: 80%; background: #f9f9f9; border: 2px solid #ccc; border-radius: 10px; font-size: 1.2em; }
+    button { padding: 10px 20px; font-size: 1em; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Dialogue Question Generator</h1>
+  <div id="questionBox">Click the button to see a question.</div>
+  <button onclick="showNextQuestion()">Next Question</button>
+
+  <script>
+    let questions = [];
+    let unused = [];
+
+    fetch('dialogue_questions.json')
+      .then(res => res.json())
+      .then(data => {
+        questions = data.questions;
+        const usedQuestions = JSON.parse(localStorage.getItem('usedQuestions') || '[]');
+        unused = questions.filter(q => !usedQuestions.includes(q));
+      });
+
+    function showNextQuestion() {
+      if (unused.length === 0) {
+        alert("You've seen all the questions!");
+        return;
+      }
+
+      const index = Math.floor(Math.random() * unused.length);
+      const question = unused.splice(index, 1)[0];
+
+      document.getElementById("questionBox").textContent = question;
+
+      // Update local storage
+      const usedQuestions = JSON.parse(localStorage.getItem('usedQuestions') || '[]');
+      usedQuestions.push(question);
+      localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
+    }
+  </script>
+</body>
+</html>
