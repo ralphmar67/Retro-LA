@@ -13,22 +13,36 @@
 </head>
 <body>
   <h1>Dialogue Question Generator</h1>
-  <div id="questionBox">Click the button to see a question.</div>
-  <button onclick="showNextQuestion()">Next Question</button>
+  <div id="questionBox">Loading questions...</div>
+  <button id="nextBtn" disabled>Next Question</button>
 
   <script>
     let questions = [];
     let unused = [];
 
-    fetch('dialogue_questions.json')
-      .then(res => res.json())
+    function saveUsedQuestions(used) {
+      localStorage.setItem("usedQuestions", JSON.stringify(used));
+    }
+
+    function getUsedQuestions() {
+      return JSON.parse(localStorage.getItem("usedQuestions") || "[]");
+    }
+
+    fetch("dialogue_questions.json")
+      .then(response => response.json())
       .then(data => {
         questions = data.questions;
-        const usedQuestions = JSON.parse(localStorage.getItem('usedQuestions') || '[]');
-        unused = questions.filter(q => !usedQuestions.includes(q));
+        const used = getUsedQuestions();
+        unused = questions.filter(q => !used.includes(q));
+        document.getElementById("questionBox").textContent = "Click the button to see a question.";
+        document.getElementById("nextBtn").disabled = false;
+      })
+      .catch(err => {
+        document.getElementById("questionBox").textContent = "Failed to load questions.";
+        console.error("Error loading questions:", err);
       });
 
-    function showNextQuestion() {
+    document.getElementById("nextBtn").addEventListener("click", () => {
       if (unused.length === 0) {
         alert("You've seen all the questions!");
         return;
@@ -36,14 +50,13 @@
 
       const index = Math.floor(Math.random() * unused.length);
       const question = unused.splice(index, 1)[0];
-
       document.getElementById("questionBox").textContent = question;
 
-      // Update local storage
-      const usedQuestions = JSON.parse(localStorage.getItem('usedQuestions') || '[]');
-      usedQuestions.push(question);
-      localStorage.setItem('usedQuestions', JSON.stringify(usedQuestions));
-    }
+      const used = getUsedQuestions();
+      used.push(question);
+      saveUsedQuestions(used);
+    });
   </script>
 </body>
 </html>
+
