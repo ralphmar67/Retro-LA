@@ -103,7 +103,7 @@
     let unusedQuestions = [];
 
     async function loadQuestions() {
-      const response = await fetch('dialogue_questions.json');
+      const response = await fetch('questions.json');
       questions = await response.json();
       unusedQuestions = [...questions];
     }
