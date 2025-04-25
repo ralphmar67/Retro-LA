@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Retrouvaille Dialogue Questions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    #questionBox {
+      margin: 30px auto;
+      padding: 20px;
+      width: 60%;
+      background-color: #f9f9f9;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      font-size: 1.2em;
+    }
+    #historyBox {
+      margin: 30px auto;
+      padding: 20px;
+      width: 60%;
+      background-color: #f1f1f1;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      text-align: left;
+    }
+    #historyBox h2 {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    #historyList {
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #footer {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 60px;
+      font-size: 0.85em;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        font-size: 1.05em;
+        padding: 20px;
+      }
+
+      #questionBox, #historyBox {
+        width: 95%;
+        font-size: 1.15em;
+        padding: 24px;
+      }
+
+      #footer {
+        flex-direction: column;
+        gap: 12px;
+        font-size: 1em;
+        padding: 12px;
+        align-items: center;
+        text-align: center;
+      }
+
+      button {
+        font-size: 1.1em;
+        padding: 14px 28px;
+      }
+
+      #historyList {
+        font-size: 1em;
+      }
+
+      #historyBox {
+        font-size: 1.05em;
+        line-height: 1.6;
+      }
+
+      #historyBox h2 {
+        font-size: 1.1em;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Retrouvaille Dialogue Questions</h1>
+  <div id="questionBox">Click "Next" to start.</div>
+  <button onclick="showNextQuestion()">Next</button>
+
+  <div id="historyBox" style="display: none;">
+    <h2>Previous Questions</h2>
+    <ul id="historyList"></ul>
+  </div>
+
+  <div id="footer">
+    <div><strong>DILD</strong> = Describe In Loving Detail</div>
+    <div><strong>HDIFAMA?</strong> = How Do I Feel About Myself As A …?</div>
+    <div><strong>HDIFAT?</strong> = How Do I Feel About That?</div>
+    <div><strong>HDIFTYT?</strong> = How Do I Feel Telling You That?</div>
+  </div>
+
+  <script>
+    let questions = [];
+    let unusedQuestions = [];
+
+    async function loadQuestions() {
+      const response = await fetch('dialogue_questions.json');
+      questions = await response.json();
+      unusedQuestions = [...questions];
+    }
+
+    function showNextQuestion() {
+      if (unusedQuestions.length === 0) {
+        unusedQuestions = [...questions];
+        alert("You've seen all the questions! Starting over.");
+      }
+
+      const index = Math.floor(Math.random() * unusedQuestions.length);
+      const question = unusedQuestions.splice(index, 1)[0];
+
+      document.getElementById("questionBox").textContent = question;
+
+      const historyBox = document.getElementById("historyBox");
+      const historyList = document.getElementById("historyList");
+
+      const li = document.createElement("li");
+      li.textContent = question;
+      historyList.insertBefore(li, historyList.firstChild);
+
+      while (historyList.children.length > 5) {
+        historyList.removeChild(historyList.lastChild);
+      }
+
+      historyBox.style.display = 'block';
+    }
+
+    window.onload = loadQuestions;
+  </script>
+
+</body>
+</html>
