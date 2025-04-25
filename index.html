@@ -19,7 +19,7 @@
       background-color: #f9f9f9;
       border: 2px solid #ccc;
       border-radius: 10px;
-      font-size: 1.2em;
+      font-size: 1.4em;
     }
     #historyBox {
       margin: 30px auto;
@@ -29,21 +29,23 @@
       border: 1px solid #bbb;
       border-radius: 10px;
       text-align: left;
+      font-size: 1.1em;
+      line-height: 1.6;
     }
     #historyBox h2 {
-      font-size: 1em;
-      margin-bottom: 10px;
+      font-size: 1.2em;
+      text-align: center;
+      margin-bottom: 12px;
     }
     #historyList {
-      font-size: 0.9em;
-      line-height: 1.4;
+      font-size: 1em;
     }
     button {
       background-color: #007BFF;
       color: white;
       border: none;
-      padding: 12px 24px;
-      font-size: 1em;
+      padding: 14px 28px;
+      font-size: 1.1em;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -55,49 +57,37 @@
       justify-content: center;
       gap: 40px;
       margin-top: 60px;
-      font-size: 0.85em;
+      font-size: 1em;
       color: #555;
     }
 
     @media (max-width: 768px) {
       body {
-        font-size: 1.05em;
-        padding: 20px;
-      }
-
-      #questionBox, #historyBox {
-        width: 95%;
-        font-size: 1.15em;
+        font-size: 1.2em;
         padding: 24px;
       }
-
+      #questionBox, #historyBox {
+        width: 95%;
+        font-size: 1.25em;
+        padding: 28px;
+      }
+      button {
+        font-size: 1.2em;
+        padding: 16px 32px;
+      }
+      #historyBox h2 {
+        font-size: 1.3em;
+      }
+      #historyList {
+        font-size: 1.1em;
+      }
       #footer {
         flex-direction: column;
         gap: 12px;
-        font-size: 1em;
-        padding: 12px;
+        font-size: 1.15em;
+        padding: 14px;
         align-items: center;
         text-align: center;
-      }
-
-      button {
-        font-size: 1.1em;
-        padding: 14px 28px;
-      }
-
-      #historyList {
-        font-size: 1em;
-      }
-
-      #historyBox {
-        font-size: 1.05em;
-        line-height: 1.6;
-      }
-
-      #historyBox h2 {
-        font-size: 1.1em;
-        text-align: center;
-        margin-bottom: 12px;
       }
     }
   </style>
