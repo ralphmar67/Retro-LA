@@ -23,6 +23,8 @@
       border-radius: 15px;
       max-width: 600px;
       font-size: 1.5rem;
+      opacity: 1;
+      transition: opacity 0.8s ease-in-out;
     }
 
     button {
@@ -107,7 +109,7 @@
   </style>
 </head>
 <body>
-  <h1>Retro LA Dialogue Questions</h1>
+  <h1>Retrouvaille Dialogue Questions</h1>
 
   <div id="spinner"></div>
   <div id="questionBox">Loading questions...</div>
@@ -160,7 +162,16 @@
       const index = Math.floor(Math.random() * unusedQuestions.length);
       const question = unusedQuestions.splice(index, 1)[0];
 
-      document.getElementById("questionBox").textContent = question;
+      const questionBox = document.getElementById("questionBox");
+
+      // Fade out
+      questionBox.style.opacity = 0;
+
+      setTimeout(() => {
+        questionBox.textContent = question;
+        // Fade back in
+        questionBox.style.opacity = 1;
+      }, 400);
 
       const historyBox = document.getElementById("historyBox");
       const historyList = document.getElementById("historyList");
@@ -175,6 +186,4 @@
 
       historyBox.style.display = 'block';
     }
-  </script>
-</body>
-</html>
+  </script
