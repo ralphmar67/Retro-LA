@@ -2,126 +2,157 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Retrouvaille Dialogue Questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Retro LA Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
+      margin: 20px;
+      padding: 0;
     }
+
     h1 {
-      color: #2c3e50;
+      font-size: 2rem;
     }
+
     #questionBox {
       margin: 30px auto;
       padding: 20px;
-      width: 60%;
-      background-color: #f9f9f9;
       border: 2px solid #ccc;
-      border-radius: 10px;
-      font-size: 1.4em;
-    }
-    #historyBox {
-      margin: 30px auto;
-      padding: 20px;
-      width: 60%;
-      background-color: #f1f1f1;
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      text-align: left;
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-    #historyBox h2 {
-      font-size: 1.2em;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    #historyList {
-      font-size: 1em;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1.1em;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #footer {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 60px;
-      font-size: 1em;
-      color: #555;
+      border-radius: 15px;
+      max-width: 600px;
+      font-size: 1.5rem;
     }
 
-    @media (max-width: 768px) {
-      body {
-        font-size: 1.2em;
-        padding: 24px;
+    button {
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      border-radius: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #historyBox {
+      margin-top: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    #historyList {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.9rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #spinner {
+      margin: 20px auto;
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #4CAF50;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 600px) {
+      .footer-grid {
+        flex-direction: row;
       }
-      #questionBox, #historyBox {
-        width: 95%;
-        font-size: 1.25em;
-        padding: 28px;
+
+      #questionBox {
+        font-size: 1.8rem;
       }
+
       button {
-        font-size: 1.2em;
-        padding: 16px 32px;
+        font-size: 1.5rem;
       }
-      #historyBox h2 {
-        font-size: 1.3em;
+
+      #historyBox {
+        font-size: 1.1rem;
       }
-      #historyList {
-        font-size: 1.1em;
-      }
-      #footer {
-        flex-direction: column;
-        gap: 12px;
-        font-size: 1.15em;
-        padding: 14px;
-        align-items: center;
-        text-align: center;
+
+      footer {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
+  <h1>Retro LA Dialogue Questions</h1>
 
-  <h1>Retrouvaille Dialogue Questions</h1>
-  <div id="questionBox">Click "Next" to start.</div>
-  <button onclick="showNextQuestion()">Next</button>
+  <div id="spinner"></div>
+  <div id="questionBox">Loading questions...</div>
+  <button onclick="showNextQuestion()">Next Question</button>
 
-  <div id="historyBox" style="display: none;">
-    <h2>Previous Questions</h2>
+  <div id="historyBox" style="display:none;">
+    <h2>Last 5 Questions</h2>
     <ul id="historyList"></ul>
   </div>
 
-  <div id="footer">
-    <div><strong>DILD</strong> = Describe In Loving Detail</div>
-    <div><strong>HDIFAMA?</strong> = How Do I Feel About Myself As A …?</div>
-    <div><strong>HDIFAT?</strong> = How Do I Feel About That?</div>
-    <div><strong>HDIFTYT?</strong> = How Do I Feel Telling You That?</div>
-  </div>
+  <footer>
+    <div class="footer-grid">
+      <div><strong>DILD:</strong> Describe In Loving Detail</div>
+      <div><strong>HDIFAMA:</strong> How Do I Feel About My Answer?</div>
+      <div><strong>HDIFAT:</strong> How Do I Feel About Telling You?</div>
+      <div><strong>HDIFTYT:</strong> How Do I Feel Telling You That?</div>
+    </div>
+  </footer>
 
   <script>
     let questions = [];
     let unusedQuestions = [];
 
-    async function loadQuestions() {
-      const response = await fetch('dialogue_questions.json');
-      questions = await response.json();
-      unusedQuestions = [...questions];
-    }
+    document.getElementById('spinner').style.display = 'block';
+
+    fetch('dialogue_questions.json')
+      .then(response => response.json())
+      .then(data => {
+        questions = data;
+        unusedQuestions = [...questions];
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('questionBox').textContent = "Press 'Next Question' to start!";
+      })
+      .catch(error => {
+        console.error('Error loading questions:', error);
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('questionBox').textContent = "Error loading questions. Please refresh.";
+      });
 
     function showNextQuestion() {
       if (unusedQuestions.length === 0) {
+        if (questions.length === 0) {
+          alert("Questions are still loading. Please try again in a moment.");
+          return;
+        }
         unusedQuestions = [...questions];
         alert("You've seen all the questions! Starting over.");
       }
@@ -144,9 +175,6 @@
 
       historyBox.style.display = 'block';
     }
-
-    window.onload = loadQuestions;
   </script>
-
 </body>
 </html>
