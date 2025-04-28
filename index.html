@@ -2,25 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retrouvaille Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 40px;
-      background-color: #f9f9f9;
     }
     h1 {
       color: #2c3e50;
+      font-size: 2em;
     }
     #questionBox {
       margin: 30px auto;
       padding: 20px;
       width: 60%;
-      background-color: #ffffff;
+      background-color: #f9f9f9;
       border: 2px solid #ccc;
       border-radius: 10px;
-      font-size: 1.4em;
+      font-size: 1.5em;
     }
     #historyBox {
       margin: 30px auto;
@@ -30,21 +31,14 @@
       border: 1px solid #bbb;
       border-radius: 10px;
       text-align: left;
-    }
-    #historyBox h2 {
-      font-size: 1em;
-      margin-bottom: 10px;
-    }
-    #historyList {
-      font-size: 0.9em;
-      line-height: 1.4;
+      font-size: 1.2em;
     }
     button {
       background-color: #007BFF;
       color: white;
       border: none;
       padding: 12px 24px;
-      font-size: 1em;
+      font-size: 1.2em;
       border-radius: 5px;
       cursor: pointer;
       margin-top: 20px;
@@ -52,25 +46,40 @@
     button:hover {
       background-color: #0056b3;
     }
-    #footer {
+    #footerKey {
       margin-top: 40px;
-      font-size: 0.8em;
-      color: #555;
+      font-size: 1em;
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      flex-wrap: wrap;
     }
-    /* Mobile Responsive */
+    .key-item {
+      margin: 5px 10px;
+    }
+
+    /* Mobile Responsiveness */
     @media (max-width: 768px) {
       #questionBox, #historyBox {
         width: 90%;
       }
-      body {
-        padding: 20px;
+      h1 {
+        font-size: 1.7em;
       }
       #questionBox {
-        font-size: 1.2em;
+        font-size: 1.3em;
+      }
+      #historyBox {
+        font-size: 1.1em;
+      }
+      button {
+        width: 90%;
+        font-size: 1.1em;
+      }
+      #footerKey {
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.95em;
       }
     }
   </style>
@@ -80,60 +89,74 @@
   <h1>Retrouvaille Dialogue Questions</h1>
 
   <div id="questionBox">Loading questions...</div>
-  <button onclick="showNextQuestion()">Next</button>
+  <button onclick="nextQuestion()">Next Question</button>
 
-  <div id="historyBox" style="display: none;">
-    <h2>Previous Questions</h2>
-    <ul id="historyList"></ul>
-  </div>
+  <div id="historyBox"></div>
 
-  <div id="footer">
-    <div><strong>DILD:</strong> Describe In Loving Detail</div>
-    <div><strong>HDIFAMA:</strong> How Do I Feel About My Answer?</div>
-    <div><strong>HDIFAT:</strong> How Do I Feel About Talking?</div>
-    <div><strong>HDIFTYT:</strong> How Do I Feel Telling You That?</div>
+  <div id="footerKey">
+    <div class="key-item"><strong>DILD:</strong> Describe In Loving Detail</div>
+    <div class="key-item"><strong>HDIFAMA:</strong> How Do I Feel About My Answer?</div>
+    <div class="key-item"><strong>HDIFAT:</strong> How Do I Feel About Talking?</div>
+    <div class="key-item"><strong>HDIFTYT:</strong> How Do I Feel Telling You That?</div>
   </div>
 
   <script>
     let questions = [];
-    let unusedQuestions = [];
+    let currentIndex = 0;
+    let history = [];
 
-    fetch('dialogue_questions.json')
-      .then(response => response.json())
-      .then(data => {
-        questions = data;
-        unusedQuestions = [...questions];
-        document.getElementById("questionBox").textContent = "Click 'Next' to start.";
-      })
-      .catch(error => {
+    async function loadQuestions() {
+      try {
+        const response = await fetch('dialogue_questions.json');
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          questions = shuffleArray(data);
+          displayQuestion();
+        } else {
+          throw new Error("Invalid questions format");
+        }
+      } catch (error) {
+        document.getElementById('questionBox').innerText = 'Error loading questions.';
         console.error('Error loading questions:', error);
-        document.getElementById("questionBox").textContent = "Failed to load questions.";
-      });
-
-    function showNextQuestion() {
-      if (unusedQuestions.length === 0) {
-        unusedQuestions = [...questions];
-        alert("You've seen all the questions! Starting over.");
       }
-
-      const index = Math.floor(Math.random() * unusedQuestions.length);
-      const question = unusedQuestions.splice(index, 1)[0];
-
-      document.getElementById("questionBox").textContent = question;
-
-      const historyBox = document.getElementById("historyBox");
-      const historyList = document.getElementById("historyList");
-
-      const li = document.createElement("li");
-      li.textContent = question;
-      historyList.insertBefore(li, historyList.firstChild);
-
-      while (historyList.children.length > 5) {
-        historyList.removeChild(historyList.lastChild);
-      }
-
-      historyBox.style.display = 'block';
     }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function displayQuestion() {
+      if (currentIndex < questions.length) {
+        const question = questions[currentIndex];
+        document.getElementById('questionBox').innerText = question;
+
+        if (history.length >= 5) {
+          history.shift();
+        }
+        history.push(question);
+
+        let historyHTML = "<h3>Last Questions</h3><ul>";
+        history.forEach(q => {
+          historyHTML += `<li>${q}</li>`;
+        });
+        historyHTML += "</ul>";
+
+        document.getElementById('historyBox').innerHTML = historyHTML;
+      } else {
+        document.getElementById('questionBox').innerText = 'You have gone through all the questions!';
+      }
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      displayQuestion();
+    }
+
+    window.onload = loadQuestions;
   </script>
 
 </body>
