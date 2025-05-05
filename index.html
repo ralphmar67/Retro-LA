@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retrouvaille Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 40px;
+      margin: 0;
     }
     h1 {
       color: #2c3e50;
-      font-size: 2em;
     }
     #questionBox {
       margin: 30px auto;
@@ -21,7 +20,7 @@
       background-color: #f9f9f9;
       border: 2px solid #ccc;
       border-radius: 10px;
-      font-size: 1.5em;
+      font-size: 1.3em;
     }
     #historyBox {
       margin: 30px auto;
@@ -31,133 +30,130 @@
       border: 1px solid #bbb;
       border-radius: 10px;
       text-align: left;
-      font-size: 1.2em;
+    }
+    #historyBox h2 {
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    #historyList {
+      font-size: 0.95em;
+      line-height: 1.5;
     }
     button {
       background-color: #007BFF;
       color: white;
       border: none;
       padding: 12px 24px;
-      font-size: 1.2em;
+      font-size: 1em;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 20px;
     }
     button:hover {
       background-color: #0056b3;
     }
-    #footerKey {
+    .footer {
       margin-top: 40px;
-      font-size: 1em;
+      font-size: 0.9em;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      flex-direction: column;
+      align-items: center;
     }
-    .key-item {
-      margin: 5px 10px;
+    .footer div {
+      margin: 4px 0;
     }
-
-    /* Mobile Responsiveness */
+    #topLinkBox {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      text-align: right;
+    }
+    #topLinkBox p {
+      margin: 0 0 5px 0;
+      font-size: 0.9em;
+    }
+    #topLinkBox a button {
+      font-size: 0.9em;
+      padding: 8px 14px;
+    }
     @media (max-width: 768px) {
       #questionBox, #historyBox {
         width: 90%;
       }
-      h1 {
-        font-size: 1.7em;
+      body {
+        padding: 20px;
       }
-      #questionBox {
-        font-size: 1.3em;
-      }
-      #historyBox {
-        font-size: 1.1em;
-      }
-      button {
-        width: 90%;
-        font-size: 1.1em;
-      }
-      #footerKey {
-        flex-direction: column;
-        align-items: center;
-        font-size: 0.95em;
+      .footer {
+        font-size: 0.85em;
       }
     }
   </style>
 </head>
 <body>
 
+  <div id="topLinkBox">
+    <p>Want to receive dialogue questions in your email?</p>
+    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank">
+      <button>Click Here</button>
+    </a>
+  </div>
+
   <h1>Retrouvaille Dialogue Questions</h1>
+  <div id="questionBox">Click "Next" to start.</div>
+  <button onclick="showNextQuestion()">Next</button>
 
-  <div id="questionBox">Loading questions...</div>
-  <button onclick="nextQuestion()">Next Question</button>
+  <div id="historyBox" style="display: none;">
+    <h2>Previous Questions</h2>
+    <ul id="historyList"></ul>
+  </div>
 
-  <div id="historyBox"></div>
-
-  <div id="footerKey">
-    <div class="key-item"><strong>DYFF!:</strong> Describe Your Feelings Fully!l</div>
-    <div class="key-item"><strong>HDIFAMA?:</strong> How Do I Feel About My Answer?</div>
-    <div class="key-item"><strong>HDIFAT?:</strong> How Do I Feel About That/This?</div>
-    <div class="key-item"><strong>HDIFTYT?:</strong> How Do I Feel Telling You This?</div>
+  <div class="footer">
+    <div><strong>DILD</strong>: Describe In Loving Detail</div>
+    <div><strong>HDIFAMA</strong>: How Do I Feel About Myself As A...?</div>
+    <div><strong>HDIFAT</strong>: How Do I Feel About That?</div>
+    <div><strong>HDIFTYT</strong>: How Do I Feel Telling You That?</div>
   </div>
 
   <script>
     let questions = [];
-    let currentIndex = 0;
-    let history = [];
+    let unusedQuestions = [];
 
     async function loadQuestions() {
       try {
-        const response = await fetch('dialogue_questions.json');
-        const data = await response.json();
-        if (Array.isArray(data)) {
-          questions = shuffleArray(data);
-          displayQuestion();
-        } else {
-          throw new Error("Invalid questions format");
-        }
+        const response = await fetch("dialogue_questions.json");
+        questions = await response.json();
+        unusedQuestions = [...questions];
       } catch (error) {
-        document.getElementById('questionBox').innerText = 'Error loading questions.';
-        console.error('Error loading questions:', error);
+        console.error("Error loading questions:", error);
+        document.getElementById("questionBox").textContent = "Failed to load questions.";
       }
     }
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    function showNextQuestion() {
+      if (unusedQuestions.length === 0) {
+        unusedQuestions = [...questions];
+        alert("You've seen all the questions! Starting over.");
       }
-      return array;
-    }
 
-    function displayQuestion() {
-      if (currentIndex < questions.length) {
-        const question = questions[currentIndex];
-        document.getElementById('questionBox').innerText = question;
+      const index = Math.floor(Math.random() * unusedQuestions.length);
+      const question = unusedQuestions.splice(index, 1)[0];
 
-        if (history.length >= 5) {
-          history.shift();
-        }
-        history.push(question);
+      document.getElementById("questionBox").textContent = question;
 
-        let historyHTML = "<h3>Last Questions</h3><ul>";
-        history.forEach(q => {
-          historyHTML += `<li>${q}</li>`;
-        });
-        historyHTML += "</ul>";
+      const historyBox = document.getElementById("historyBox");
+      const historyList = document.getElementById("historyList");
 
-        document.getElementById('historyBox').innerHTML = historyHTML;
-      } else {
-        document.getElementById('questionBox').innerText = 'You have gone through all the questions!';
+      const li = document.createElement("li");
+      li.textContent = question;
+      historyList.insertBefore(li, historyList.firstChild);
+
+      while (historyList.children.length > 5) {
+        historyList.removeChild(historyList.lastChild);
       }
+
+      historyBox.style.display = 'block';
     }
 
-    function nextQuestion() {
-      currentIndex++;
-      displayQuestion();
-    }
-
-    window.onload = loadQuestions;
+    loadQuestions();
   </script>
-
 </body>
 </html>
