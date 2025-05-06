@@ -61,20 +61,58 @@
     .footer div {
       margin: 4px 0;
     }
-    #topLinkBox {
+
+    .email-signup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f8f9fa;
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      max-width: 90%;
+    }
+
+    .signup-button {
+      background-color: #007bff;
+      color: white;
+      padding: 0.5rem 1.25rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .signup-button:hover {
+      background-color: #0056b3;
+    }
+
+    .close-button {
       position: absolute;
-      top: 10px;
+      top: 6px;
       right: 10px;
-      text-align: right;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+      padding: 0;
     }
-    #topLinkBox p {
-      margin: 0 0 5px 0;
-      font-size: 0.9em;
+
+    .close-button:hover {
+      color: #000;
     }
-    #topLinkBox a button {
-      font-size: 0.9em;
-      padding: 8px 14px;
-    }
+
     @media (max-width: 768px) {
       #questionBox, #historyBox {
         width: 90%;
@@ -85,19 +123,24 @@
       .footer {
         font-size: 0.85em;
       }
+      .email-signup {
+        font-size: 1.5rem;
+        padding: 1.5rem 2.5rem;
+      }
+      .signup-button {
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+      }
+      .close-button {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="topLinkBox">
-    <p>Want to receive dialogue questions in your email?</p>
-    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank">
-      <button>Click Here</button>
-    </a>
-  </div>
-
   <h1>Retrouvaille Dialogue Questions</h1>
+
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
 
@@ -111,6 +154,15 @@
     <div><strong>HDIFAMA?</strong>: How Do I Feel About My Answer?</div>
     <div><strong>HDIFAT?</strong>: How Do I Feel About That/This?</div>
     <div><strong>HDIFTYT?</strong>: How Do I Feel Telling You This?</div>
+  </div>
+
+  <!-- Fixed Email Signup Bar -->
+  <div class="email-signup" id="emailSignup">
+    <button class="close-button" onclick="document.getElementById('emailSignup').style.display='none'">&times;</button>
+    <span>Want to receive dialogue questions in your email?</span>
+    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">
+      Sign Up
+    </a>
   </div>
 
   <script>
@@ -152,6 +204,12 @@
 
       historyBox.style.display = 'block';
     }
+
+    loadQuestions();
+  </script>
+</body>
+</html>
+
 
     loadQuestions();
   </script>
