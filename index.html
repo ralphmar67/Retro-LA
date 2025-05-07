@@ -211,6 +211,7 @@
       if (unusedQuestions.length === 0) {
         shuffle(questions);
         unusedQuestions = [...questions];
+        localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
         alert("You've seen all the questions! Starting over.");
       }
 
@@ -246,4 +247,3 @@
   </script>
 </body>
 </html>
-
