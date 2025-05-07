@@ -47,10 +47,22 @@
       font-size: 1em;
       border-radius: 5px;
       cursor: pointer;
+      margin: 10px;
     }
     button:hover {
       background-color: #0056b3;
     }
+
+    .reset-button {
+      background-color: #6c757d;
+      font-size: 0.9em;
+      padding: 8px 16px;
+      margin-top: 4px;
+    }
+    .reset-button:hover {
+      background-color: #5a6268;
+    }
+
     .footer {
       margin-top: 40px;
       font-size: 0.9em;
@@ -143,6 +155,7 @@
 
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
+  <button class="reset-button" onclick="resetQuestions()">Reset</button>
 
   <div id="historyBox" style="display: none;">
     <h2>Previous Questions</h2>
@@ -156,7 +169,6 @@
     <div><strong>HDIFTYT?</strong>: How Do I Feel Telling You This?</div>
   </div>
 
-  <!-- Fixed Email Signup Bar -->
   <div class="email-signup" id="emailSignup">
     <button class="close-button" onclick="document.getElementById('emailSignup').style.display='none'">&times;</button>
     <span>Want to receive dialogue questions in your email?</span>
@@ -169,11 +181,26 @@
     let questions = [];
     let unusedQuestions = [];
 
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
     async function loadQuestions() {
       try {
         const response = await fetch("dialogue_questions.json");
         questions = await response.json();
-        unusedQuestions = [...questions];
+
+        const saved = localStorage.getItem("unusedQuestions");
+        if (saved) {
+          unusedQuestions = JSON.parse(saved);
+        } else {
+          shuffle(questions);
+          unusedQuestions = [...questions];
+          localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
+        }
       } catch (error) {
         console.error("Error loading questions:", error);
         document.getElementById("questionBox").textContent = "Failed to load questions.";
@@ -182,12 +209,13 @@
 
     function showNextQuestion() {
       if (unusedQuestions.length === 0) {
+        shuffle(questions);
         unusedQuestions = [...questions];
         alert("You've seen all the questions! Starting over.");
       }
 
-      const index = Math.floor(Math.random() * unusedQuestions.length);
-      const question = unusedQuestions.splice(index, 1)[0];
+      const question = unusedQuestions.shift();
+      localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
 
       document.getElementById("questionBox").textContent = question;
 
@@ -205,13 +233,15 @@
       historyBox.style.display = 'block';
     }
 
+    function resetQuestions() {
+      localStorage.removeItem("unusedQuestions");
+      shuffle(questions);
+      unusedQuestions = [...questions];
+      alert("Questions have been reset.");
+    }
+
     loadQuestions();
   </script>
 </body>
 </html>
 
-
-   
-  </script>
-</body>
-</html>
