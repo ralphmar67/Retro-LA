@@ -179,6 +179,7 @@
 
   <script>
     let questions = [];
+    let usedQuestions = [];
     let unusedQuestions = [];
 
     function shuffle(array) {
@@ -193,10 +194,15 @@
         const response = await fetch("dialogue_questions.json");
         questions = await response.json();
 
-        const saved = localStorage.getItem("unusedQuestions");
-        if (saved) {
-          unusedQuestions = JSON.parse(saved);
+        // Retrieve the used and unused questions from localStorage, if available
+        const savedUsed = localStorage.getItem("usedQuestions");
+        const savedUnused = localStorage.getItem("unusedQuestions");
+
+        if (savedUsed && savedUnused) {
+          usedQuestions = JSON.parse(savedUsed);
+          unusedQuestions = JSON.parse(savedUnused);
         } else {
+          // If not in localStorage, shuffle and prepare the lists
           shuffle(questions);
           unusedQuestions = [...questions];
           localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
@@ -209,17 +215,24 @@
 
     function showNextQuestion() {
       if (unusedQuestions.length === 0) {
-        shuffle(questions);
-        unusedQuestions = [...questions];
-        localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
+        // When all questions are used, shuffle and reset the process
         alert("You've seen all the questions! Starting over.");
+        usedQuestions = [];
+        unusedQuestions = [...questions];
+        shuffle(unusedQuestions);
       }
 
       const question = unusedQuestions.shift();
+      usedQuestions.push(question);
+
+      // Update localStorage with the current used and unused questions
+      localStorage.setItem("usedQuestions", JSON.stringify(usedQuestions));
       localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
 
+      // Show the current question
       document.getElementById("questionBox").textContent = question;
 
+      // Update history
       const historyBox = document.getElementById("historyBox");
       const historyList = document.getElementById("historyList");
 
@@ -235,9 +248,11 @@
     }
 
     function resetQuestions() {
+      localStorage.removeItem("usedQuestions");
       localStorage.removeItem("unusedQuestions");
-      shuffle(questions);
+      usedQuestions = [];
       unusedQuestions = [...questions];
+      shuffle(unusedQuestions);
       document.getElementById("historyList").innerHTML = "";
       document.getElementById("historyBox").style.display = "none";
       alert("Questions and history have been reset.");
