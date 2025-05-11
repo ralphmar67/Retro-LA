@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Retrouvaille Dialogue Questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,6 +11,27 @@
       padding: 40px;
       margin: 0;
     }
+
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+
+    .logo img {
+      height: 8vw;
+      max-height: 60px;
+      width: auto;
+    }
+
+    @media (max-width: 600px) {
+      .logo img {
+        height: 12vw;
+        max-height: 50px;
+      }
+    }
+
     h1 {
       color: #2c3e50;
     }
@@ -69,7 +91,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 80px; /* Give space for signup box */
+      padding-bottom: 80px;
     }
     .footer div {
       margin: 4px 0;
@@ -150,6 +172,11 @@
 </head>
 <body>
 
+  <!-- Logo -->
+  <a href="https://www.helpourmarriage.org" class="logo">
+    <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
+  </a>
+
   <h1>Retrouvaille Dialogue Questions</h1>
 
   <div id="questionBox">Click "Next" to start.</div>
@@ -194,7 +221,6 @@
         const response = await fetch("dialogue_questions.json");
         questions = await response.json();
 
-        // Retrieve the used and unused questions from localStorage, if available
         const savedUsed = localStorage.getItem("usedQuestions");
         const savedUnused = localStorage.getItem("unusedQuestions");
 
@@ -202,7 +228,6 @@
           usedQuestions = JSON.parse(savedUsed);
           unusedQuestions = JSON.parse(savedUnused);
         } else {
-          // If not in localStorage, shuffle and prepare the lists
           shuffle(questions);
           unusedQuestions = [...questions];
           localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
@@ -215,7 +240,6 @@
 
     function showNextQuestion() {
       if (unusedQuestions.length === 0) {
-        // When all questions are used, shuffle and reset the process
         alert("You've seen all the questions! Starting over.");
         usedQuestions = [];
         unusedQuestions = [...questions];
@@ -225,14 +249,11 @@
       const question = unusedQuestions.shift();
       usedQuestions.push(question);
 
-      // Update localStorage with the current used and unused questions
       localStorage.setItem("usedQuestions", JSON.stringify(usedQuestions));
       localStorage.setItem("unusedQuestions", JSON.stringify(unusedQuestions));
 
-      // Show the current question
       document.getElementById("questionBox").textContent = question;
 
-      // Update history
       const historyBox = document.getElementById("historyBox");
       const historyList = document.getElementById("historyList");
 
