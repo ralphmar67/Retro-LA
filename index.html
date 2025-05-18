@@ -11,28 +11,24 @@
       margin: 0;
     }
 
-    /* Logo positioning */
-    .logo-link {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 100;
+    /* Centered logo styling */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
-    .logo-link img {
-      height: 80px;
-      width: auto;
-    }
-
-    @media (max-width: 768px) {
-      .logo-link img {
-        height: 60px;
-      }
+    .logo-container img {
+      width: 180px;
+      height: auto;
     }
 
     h1 {
       color: #2c3e50;
     }
+
     #questionBox {
       margin: 30px auto;
       padding: 20px;
@@ -41,8 +37,8 @@
       border: 2px solid #ccc;
       border-radius: 10px;
       font-size: 1.3em;
-      text-align: center;
     }
+
     #historyBox {
       margin: 30px auto;
       padding: 20px;
@@ -52,14 +48,17 @@
       border-radius: 10px;
       text-align: left;
     }
+
     #historyBox h2 {
       font-size: 1em;
       margin-bottom: 10px;
     }
+
     #historyList {
       font-size: 0.95em;
       line-height: 1.5;
     }
+
     button {
       background-color: #007BFF;
       color: white;
@@ -70,6 +69,7 @@
       cursor: pointer;
       margin: 10px;
     }
+
     button:hover {
       background-color: #0056b3;
     }
@@ -80,6 +80,7 @@
       padding: 8px 16px;
       margin-top: 4px;
     }
+
     .reset-button:hover {
       background-color: #5a6268;
     }
@@ -90,8 +91,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 80px;
+      padding-bottom: 80px; /* Give space for signup box */
     }
+
     .footer div {
       margin: 4px 0;
     }
@@ -149,20 +151,25 @@
       #questionBox, #historyBox {
         width: 90%;
       }
+
       body {
         padding: 20px;
       }
+
       .footer {
         font-size: 0.85em;
       }
+
       .email-signup {
         font-size: 1rem;
         padding: 1rem;
       }
+
       .signup-button {
         font-size: 0.95rem;
         padding: 0.5rem 1rem;
       }
+
       .close-button {
         font-size: 1.5rem;
       }
@@ -171,10 +178,12 @@
 </head>
 <body>
 
-  <!-- Clickable Logo -->
-  <a href="https://www.helpourmarriage.org" target="_blank" class="logo-link">
-    <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
-  </a>
+  <!-- Centered logo -->
+  <div class="logo-container">
+    <a href="https://www.helpourmarriage.org" target="_blank">
+      <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
+    </a>
+  </div>
 
   <h1>Retrouvaille Dialogue Questions</h1>
 
