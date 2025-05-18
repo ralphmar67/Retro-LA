@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Retrouvaille Dialogue Questions</title>
+  <title>Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,18 +11,48 @@
       margin: 0;
     }
 
-    /* Centered logo styling */
+    /* Logo styling */
     .logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 20px;
       margin-bottom: 20px;
     }
 
     .logo-container img {
-      width: 180px;
+      max-width: 500px;
       height: auto;
+    }
+
+    /* Email signup at top-left */
+    .top-left-signup {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #f8f9fa;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      text-align: center;
+    }
+
+    .signup-button {
+      background-color: #007bff;
+      color: white;
+      padding: 0.4rem 1rem;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .signup-button:hover {
+      background-color: #0056b3;
     }
 
     h1 {
@@ -91,101 +121,44 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 80px; /* Give space for signup box */
+      padding-bottom: 80px;
     }
 
     .footer div {
       margin: 4px 0;
     }
 
-    .email-signup {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #f8f9fa;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-      max-width: 90%;
-    }
-
-    .signup-button {
-      background-color: #007bff;
-      color: white;
-      padding: 0.4rem 1rem;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .signup-button:hover {
-      background-color: #0056b3;
-    }
-
-    .close-button {
-      position: absolute;
-      top: 4px;
-      right: 8px;
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      color: #888;
-      cursor: pointer;
-    }
-
-    .close-button:hover {
-      color: #000;
-    }
-
     @media (max-width: 768px) {
       #questionBox, #historyBox {
         width: 90%;
       }
-
       body {
         padding: 20px;
       }
-
       .footer {
         font-size: 0.85em;
-      }
-
-      .email-signup {
-        font-size: 1rem;
-        padding: 1rem;
-      }
-
-      .signup-button {
-        font-size: 0.95rem;
-        padding: 0.5rem 1rem;
-      }
-
-      .close-button {
-        font-size: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Centered logo -->
+  <!-- Email Signup Top-Left -->
+  <div class="top-left-signup">
+    <div>Want dialogue questions in your email?</div>
+    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">
+      Sign Up
+    </a>
+  </div>
+
+  <!-- Centered Logo -->
   <div class="logo-container">
     <a href="https://www.helpourmarriage.org" target="_blank">
       <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
     </a>
   </div>
 
-  <h1>Retrouvaille Dialogue Questions</h1>
+  <h1>Dialogue Questions</h1>
 
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
@@ -201,15 +174,6 @@
     <div><strong>HDIFAMA?</strong>: How Do I Feel About My Answer?</div>
     <div><strong>HDIFAT?</strong>: How Do I Feel About That/This?</div>
     <div><strong>HDIFTYT?</strong>: How Do I Feel Telling You This?</div>
-  </div>
-
-  <!-- Email Signup -->
-  <div class="email-signup" id="emailSignup">
-    <button class="close-button" onclick="document.getElementById('emailSignup').style.display='none'">&times;</button>
-    <span>Want dialogue questions in your email?</span>
-    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">
-      Sign Up
-    </a>
   </div>
 
   <script>
@@ -291,3 +255,4 @@
   </script>
 </body>
 </html>
+
