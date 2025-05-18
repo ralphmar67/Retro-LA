@@ -1,66 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
       margin: 0;
-    }
-
-    /* Logo styling */
-    .logo-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .logo-container img {
-      max-width: 500px;
-      height: auto;
-    }
-
-    /* Email signup at top-left */
-    .top-left-signup {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #f8f9fa;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+      padding: 20px;
       text-align: center;
     }
 
-    .signup-button {
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .email-signup-top {
+      text-align: left;
+      font-size: 0.9em;
+      padding-left: 10px;
+    }
+
+    .email-signup-top a {
+      display: inline-block;
       background-color: #007bff;
       color: white;
-      padding: 0.4rem 1rem;
+      padding: 6px 12px;
       text-decoration: none;
-      border-radius: 6px;
-      font-size: 0.95rem;
+      border-radius: 5px;
+      font-size: 0.85rem;
       font-weight: 500;
-      display: inline-block;
-      margin-top: 5px;
+      margin-top: 4px;
     }
 
-    .signup-button:hover {
+    .email-signup-top a:hover {
       background-color: #0056b3;
     }
 
+    .logo-container {
+      margin: 0 auto 10px;
+      text-align: center;
+    }
+
+    .logo-container img {
+      max-height: 90px;
+      height: auto;
+      width: auto;
+    }
+
     h1 {
+      font-size: 1.5em;
+      margin: 4px 0 16px 0;
       color: #2c3e50;
     }
 
     #questionBox {
-      margin: 30px auto;
+      margin: 20px auto;
       padding: 20px;
       width: 60%;
       background-color: #f9f9f9;
@@ -70,7 +68,7 @@
     }
 
     #historyBox {
-      margin: 30px auto;
+      margin: 20px auto;
       padding: 20px;
       width: 60%;
       background-color: #f1f1f1;
@@ -87,6 +85,8 @@
     #historyList {
       font-size: 0.95em;
       line-height: 1.5;
+      max-height: none;
+      overflow: visible;
     }
 
     button {
@@ -116,49 +116,46 @@
     }
 
     .footer {
-      margin-top: 40px;
+      margin-top: 30px;
       font-size: 0.9em;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 80px;
+      padding-bottom: 40px;
     }
 
     .footer div {
-      margin: 4px 0;
+      margin: 2px 0;
     }
 
     @media (max-width: 768px) {
       #questionBox, #historyBox {
         width: 90%;
       }
-      body {
-        padding: 20px;
+      .logo-container img {
+        max-height: 70px;
       }
-      .footer {
-        font-size: 0.85em;
+      h1 {
+        font-size: 1.2em;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Email Signup Top-Left -->
-  <div class="top-left-signup">
-    <div>Want dialogue questions in your email?</div>
-    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">
-      Sign Up
-    </a>
+  <div class="top-bar">
+    <div class="email-signup-top">
+      <div>Want questions in your email?</div>
+      <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank">Sign Up</a>
+    </div>
+    <div class="logo-container">
+      <a href="Retro Classic logo NB.png" target="_blank">
+        <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
+      </a>
+      <h1>Dialogue Questions</h1>
+    </div>
+    <div style="width: 120px;"></div> <!-- spacer -->
   </div>
-
-  <!-- Centered Logo -->
-  <div class="logo-container">
-    <a href="https://www.helpourmarriage.org" target="_blank">
-      <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
-    </a>
-  </div>
-
-  <h1>Dialogue Questions</h1>
 
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
@@ -255,4 +252,5 @@
   </script>
 </body>
 </html>
+
 
