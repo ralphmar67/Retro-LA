@@ -8,7 +8,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding-top: 20px;
-      padding-bottom: 100px; /* Space for footer */
+      padding-bottom: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -162,13 +162,11 @@
 </head>
 <body>
 
-  <!-- Email Signup Top Left -->
   <div class="email-signup">
     <div>Want dialogue questions in your email?</div>
     <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">Sign Up</a>
   </div>
 
-  <!-- Header with Logo and Title -->
   <div class="header-container">
     <a href="https://www.helpourmarriage.org" target="_blank">
       <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo" class="logo">
@@ -176,18 +174,15 @@
     <h1>Dialogue Questions</h1>
   </div>
 
-  <!-- Question Section -->
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
   <button class="reset-button" onclick="resetQuestions()">Reset</button>
 
-  <!-- History Box -->
   <div id="historyBox" style="display: none;">
     <h2>Previous Questions</h2>
     <ul id="historyList"></ul>
   </div>
 
-  <!-- Sticky Footer Key -->
   <div class="footer">
     <div>DYFF!: Describe Your Feelings Fully!</div>
     <div>HDIFAMA?: How Do I Feel About My Answer?</div>
@@ -195,7 +190,6 @@
     <div>HDIFTYT?: How Do I Feel Telling You This?</div>
   </div>
 
-  <!-- JavaScript Logic -->
   <script>
     let questions = [];
     let usedQuestions = [];
@@ -253,7 +247,8 @@
       li.textContent = question;
       historyList.insertBefore(li, historyList.firstChild);
 
-      while (historyList.children.length > 10) {
+      // Show only last 5 questions
+      while (historyList.children.length > 5) {
         historyList.removeChild(historyList.lastChild);
       }
 
