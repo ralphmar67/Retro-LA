@@ -1,80 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Dialogue Questions</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding-top: 20px;
+      padding-bottom: 100px; /* Space for footer */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .email-signup {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #f8f9fa;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
       text-align: center;
     }
 
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-
-    .email-signup-top {
-      text-align: left;
-      font-size: 0.9em;
-      padding-left: 10px;
-    }
-
-    .email-signup-top a {
-      display: inline-block;
+    .signup-button {
       background-color: #007bff;
       color: white;
-      padding: 6px 12px;
+      padding: 0.35rem 0.75rem;
       text-decoration: none;
-      border-radius: 5px;
-      font-size: 0.85rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
       font-weight: 500;
-      margin-top: 4px;
+      display: inline-block;
+      margin-top: 5px;
     }
 
-    .email-signup-top a:hover {
+    .signup-button:hover {
       background-color: #0056b3;
     }
 
-    .logo-container {
-      margin: 0 auto 10px;
-      text-align: center;
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .logo-container img {
-      max-height: 120px;
+    .logo {
+      max-width: 300px;
       height: auto;
-      width: auto;
     }
 
     h1 {
-      font-size: 1.6em;
-      margin: 4px 0 16px 0;
+      margin-top: 10px;
       color: #2c3e50;
+      font-size: 2em;
     }
 
     #questionBox {
-      margin: 20px auto;
+      margin: 30px auto;
       padding: 20px;
       width: 60%;
       background-color: #f9f9f9;
       border: 2px solid #ccc;
       border-radius: 10px;
       font-size: 1.3em;
+      text-align: center;
     }
 
     #historyBox {
-      margin: 20px auto;
+      margin-top: 30px;
       padding: 20px;
       width: 60%;
       background-color: #f1f1f1;
       border: 1px solid #bbb;
       border-radius: 10px;
       text-align: left;
+      overflow-y: auto;
+      max-height: 300px;
     }
 
     #historyBox h2 {
@@ -85,8 +92,6 @@
     #historyList {
       font-size: 0.95em;
       line-height: 1.5;
-      max-height: none;
-      overflow: visible;
     }
 
     button {
@@ -116,16 +121,17 @@
     }
 
     .footer {
-      margin-top: 30px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: white;
+      padding: 12px;
       font-size: 0.9em;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 40px;
-    }
-
-    .footer div {
-      margin: 2px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-top: 1px solid #ccc;
     }
 
     @media (max-width: 768px) {
@@ -133,48 +139,63 @@
         width: 90%;
       }
 
-      .logo-container img {
-        max-height: 90px;
+      .logo {
+        max-width: 200px;
       }
 
-      h1 {
-        font-size: 1.2em;
+      .footer {
+        font-size: 0.8em;
+        padding: 10px;
+      }
+
+      .email-signup {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+
+      .signup-button {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.75rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <div class="email-signup-top">
-      <div>Want questions in your email?</div>
-      <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank">Sign Up</a>
-    </div>
-    <div class="logo-container">
-      <a href="https://helpourmarriage.org" target="_blank">
-        <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo">
-      </a>
-      <h1>Dialogue Questions</h1>
-    </div>
-    <div style="width: 120px;"></div> <!-- right spacer -->
+  <!-- Email Signup Top Left -->
+  <div class="email-signup">
+    <div>Want dialogue questions in your email?</div>
+    <a href="https://mailchi.mp/0b21cba76339/daily-dialogue-sign-up" target="_blank" class="signup-button">Sign Up</a>
   </div>
 
+  <!-- Header with Logo and Title -->
+  <div class="header-container">
+    <a href="https://www.helpourmarriage.org" target="_blank">
+      <img src="Retro Classic logo NB.png" alt="Retrouvaille Logo" class="logo">
+    </a>
+    <h1>Dialogue Questions</h1>
+  </div>
+
+  <!-- Question Section -->
   <div id="questionBox">Click "Next" to start.</div>
   <button onclick="showNextQuestion()">Next</button>
   <button class="reset-button" onclick="resetQuestions()">Reset</button>
 
+  <!-- History Box -->
   <div id="historyBox" style="display: none;">
     <h2>Previous Questions</h2>
     <ul id="historyList"></ul>
   </div>
 
+  <!-- Sticky Footer Key -->
   <div class="footer">
-    <div><strong>DYFF!</strong>: Describe Your Feelings Fully!</div>
-    <div><strong>HDIFAMA?</strong>: How Do I Feel About My Answer?</div>
-    <div><strong>HDIFAT?</strong>: How Do I Feel About That/This?</div>
-    <div><strong>HDIFTYT?</strong>: How Do I Feel Telling You This?</div>
+    <div>DYFF!: Describe Your Feelings Fully!</div>
+    <div>HDIFAMA?: How Do I Feel About My Answer?</div>
+    <div>HDIFAT?: How Do I Feel About That/This?</div>
+    <div>HDIFTYT?: How Do I Feel Telling You This?</div>
   </div>
 
+  <!-- JavaScript Logic -->
   <script>
     let questions = [];
     let usedQuestions = [];
@@ -232,7 +253,7 @@
       li.textContent = question;
       historyList.insertBefore(li, historyList.firstChild);
 
-      while (historyList.children.length > 5) {
+      while (historyList.children.length > 10) {
         historyList.removeChild(historyList.lastChild);
       }
 
@@ -254,6 +275,7 @@
   </script>
 </body>
 </html>
+
 
 
 
