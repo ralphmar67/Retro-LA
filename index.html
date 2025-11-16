@@ -93,6 +93,21 @@
       background-color: #5a6268;
     }
 
+    /* ✅ NEW: custom button styling for PDF link */
+    .custom-button {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: 600;
+    }
+
+    .custom-button:hover {
+      background-color: #1e7e34;
+    }
+
     .footer {
       position: fixed;
       bottom: 0;
@@ -123,6 +138,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="header-container">
@@ -141,9 +157,11 @@
     <ul id="historyList"></ul>
   </div>
 
-  <div style="margin-top: 20px;">
-  <a href="https://drive.google.com/file/d/1srVPdtItOctksJW0jPutw1cj4CIv6GVt/view?usp=drive_link" class="custom-button">Dialogue Questions in a PDF</a>
-</div>
+  <!-- PDF Button centered -->
+  <div style="margin-top: 20px; text-align: center;">
+    <a href="https://drive.google.com/file/d/1srVPdtItOctksJW0jPutw1cj4CIv6GVt/view?usp=drive_link"
+       class="custom-button" target="_blank">Download Dialogue Questions PDF</a>
+  </div>
 
   <div class="footer">
     <div>DYFF!: Describe Your Feelings Fully!</div>
@@ -209,7 +227,6 @@
       li.textContent = question;
       historyList.insertBefore(li, historyList.firstChild);
 
-      // Show only last 5 questions
       while (historyList.children.length > 5) {
         historyList.removeChild(historyList.lastChild);
       }
@@ -230,5 +247,7 @@
 
     loadQuestions();
   </script>
+
 </body>
 </html>
+
